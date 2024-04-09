@@ -12,3 +12,11 @@
 $("body").on("click", ".btn-delete", function () {
     $(this).parents("tr").remove();
 });
+
+
+
+function AddSkill() {
+
+    var objData = {};
+}
+

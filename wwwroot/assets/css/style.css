@@ -982,6 +982,20 @@ h6 {
   font-size: 2.5rem;
 }
 
+.valid-tooltip {
+    position: absolute;
+    top: 100%;
+    z-index: 5;
+    display: none;
+    max-width: 100%;
+    padding: 0.25rem 0.5rem;
+    margin-top: 0.1rem;
+    font-size: 0.875rem;
+    color: #fff;
+    background-color: var(--bs-success);
+    border-radius: var(--bs-border-radius);
+}
+
 .iconslist .label {
   font-family: var(--bs-font-monospace);
   display: inline-block;

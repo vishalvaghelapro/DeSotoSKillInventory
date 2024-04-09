@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - SkillInventoryCore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SkillInventoryCore.styles.css" asp-append-version="true" />
 
 
     <!-- Vendor CSS Files -->
@@ -141,7 +140,7 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                                @* <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle"> *@
                                 <div>
                                     <h4>Maria Hudson</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -155,7 +154,7 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                                @* <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle"> *@
                                 <div>
                                     <h4>Anna Nelson</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -169,7 +168,7 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                                @* <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle"> *@
                                 <div>
                                     <h4>David Muldon</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -301,13 +300,14 @@
     <script src="~/assets/vendor/php-email-form/validate.js"></script> *@
 
     <!-- Template Main JS File -->
-    <script src="~/assets/js/main.js"></script>
+
 
 
 
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/js/main.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

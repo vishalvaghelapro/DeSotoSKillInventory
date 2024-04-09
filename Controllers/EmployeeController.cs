@@ -92,11 +92,12 @@ namespace SkillInventory.Controllers
             return new JsonResult(null);
 
         }
-        
+
         [HttpPost]
         public JsonResult AddEmployee(Employee employee)
         {
             string status = "";
+
             // Validate employee data (consider adding more validations as needed)
             if (employee == null ||
                 string.IsNullOrEmpty(employee.FirstName) ||
@@ -106,7 +107,8 @@ namespace SkillInventory.Controllers
                 string.IsNullOrEmpty(employee.Roll) ||
                 string.IsNullOrEmpty(employee.Password))
             {
-                return Json(new { status = "null" });
+                status = "null";
+                return Json(status);
             }
 
             try
@@ -124,23 +126,37 @@ namespace SkillInventory.Controllers
                     cmd.Parameters.AddWithValue("@Password", EncryptPasswordBase64(employee.Password));
 
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();  // This line might throw an exception if the stored procedure raises RAISERROR
                 }
+
                 status = "Success";
                 return Json(status);
-                // return Json(new { status = "Saved" }); // Indicate success without revealing sensitive data
             }
-            catch (Exception ex)
+            catch (SqlException ex)  // Catch specific SqlException for database-related errors
             {
+                // Check for specific error codes or messages from the stored procedure's RAISERROR
+                if (ex.Message.Contains("already exists"))  // Example check for duplicate email error
+                {
+                    status = "Error: Email already exists";
+                }
+                else
+                {
+                    status = "Error: An error occurred while adding the employee.";
+                }
+
                 // Log the exception for debugging
                 Console.WriteLine(ex.Message);
-                status = "Error";
 
-                // Return a generic error message to avoid exposing details
-
+                return Json(status);
             }
-            return Json(status);
+            catch (Exception ex)  // Catch any other unexpected exceptions
+            {
+                status = "Error: An unexpected error occurred.";
+                Console.WriteLine(ex.Message);
+                return Json(status);
+            }
         }
+
         public static string EncryptPasswordBase64(string text)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(text);

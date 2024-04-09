@@ -34,3 +34,15 @@ body {
             border: none;
             cursor: pointer;
         }
+
+
+#myEmail::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+#myEmail {
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 16px;
+}

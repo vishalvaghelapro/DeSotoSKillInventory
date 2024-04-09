@@ -38,15 +38,20 @@ namespace SkillInventory
             {
                 endpoints.MapControllerRoute(
                 name: "default",
+                pattern: "{controller=Home}/{action=Test}/{id?}");
+                endpoints.MapControllerRoute(
+                name: "Login",
+                pattern: "{controller=Home}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(
+                name: "Dashboard",
+                pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+                endpoints.MapControllerRoute(
+                name: "AddSkill",
                 pattern: "{controller=Home}/{action=AddSkill}/{id?}");
                 endpoints.MapControllerRoute(
                 name: "Registration",
                 pattern: "{controller=Home}/{action=Registration}/{id?}");
-                endpoints.MapControllerRoute(
-                name: "Login",
-                pattern: "{controller=Login}/{action=Login}/{id?}");
-
-
+               
             });
 
             app.Run();
