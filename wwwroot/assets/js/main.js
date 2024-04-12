@@ -286,9 +286,10 @@
 
   Array.prototype.slice.call(needsValidation)
     .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault()
         if (!form.checkValidity()) {
-          event.preventDefault()
+         
           event.stopPropagation()
         }
 

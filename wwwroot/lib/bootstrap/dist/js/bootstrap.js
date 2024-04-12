@@ -198,7 +198,7 @@
 
     if (typeof element.getRootNode === 'function') {
       const root = element.getRootNode();
-      return root instanceof ShadowRoot ? root : null;
+      return root instanceof ShadowRoot ? root : null;Dashboard
     }
 
     if (element instanceof ShadowRoot) {

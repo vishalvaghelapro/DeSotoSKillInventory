@@ -20,49 +20,46 @@
                         </div>
 
 
- 
-                        <form>
 
-                            <div class="">
+                        <form class="needs-validation" novalidate>
+                            <div class="col-md mt-4 mb-4">
                                 <label for="skill" class="col-sm-2 col-form-label">Skill Name:</label>
-                                <div class="col-sm-10">
+                                <div class="col-md-10 position-relative">
                                     <input type="text" name="name" class="form-control" value="" required>
+                                   @*  <div class="invalid-tooltip">Please enter your Skills</div> *@
                                 </div>
-                                
                             </div>
 
-                            <div class="form-group col-md mt-2 mb-3">
+                            <div class="col-md mt-4 mb-3">
                                 <label for="proficiency">Proficiency Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                <div class="form-check-inline">
+                                <div class="form-check-inline position-relative">
                                     <input class="form-check-input" type="radio" name="proficiency" id="beginnerRadio" value="Beginner" required>
-                                    <label class="form-check-label" for="beginnerRadio">
-                                        Beginner
-                                    </label>
+                                    <label class="form-check-label" for="beginnerRadio">Beginner</label>
+                                  
+                               @*      <div class="invalid-tooltip">Select proficiency level</div> *@
                                 </div>
-                                <div class="form-check-inline">
+                                <div class="form-check-inline position-relative">
                                     <input class="form-check-input" type="radio" name="proficiency" id="intermediateRadio" value="Intermediate" required>
-                                    <label class="form-check-label" for="intermediateRadio">
-                                        Intermediate
-                                    </label>
+                                    <label class="form-check-label" for="intermediateRadio">Intermediate</label>
+                         @*            <div class="invalid-tooltip">Select proficiency level</div> *@
                                 </div>
-                                <div class="form-check-inline">
+                                <div class="form-check-inline position-relative">
                                     <input class="form-check-input" type="radio" name="proficiency" id="expertRadio" value="Expert" required>
-                                    <label class="form-check-label" for="expertRadio">
-                                        Expert
-                                    </label>
+                                    <label class="form-check-label" for="expertRadio">Expert</label>
+                                 @*    <div class="invalid-tooltip">Select proficiency level</div> *@
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-success save-btn">Add</button>
-
                         </form>
+
 
                             <br />
                             <table class="table table-bordered data-table">
                                 <thead>
                                         <th>SkillName</th>
                                         <th>Proficiency</th>
-                                        <th>Actions</th>
+                                        <th>Delete</th>
                                 </thead>
                                    
                                 
@@ -72,16 +69,7 @@
                         <button type="submit" class="btn btn-primary save-btn" onclick="AddSkill();">Submit</button>
                         </div>
 
-                        <div class="row">
-
-                            <br />
-                            @* <hr />
-                            <div class="col d-flex justify-content-center">
-
-                            <p>Have a Employee? &nbsp;&nbsp;<button type="button" class="btn .btn-lg btn-danger text-white"> <a href="/home/EmployeeDetail" class="text-white" style="text-decoration:none">Login</a></button></p>
-                            </div> *@
-                        </div>
-
+                      
                     </div>
                 </div>
             </div>

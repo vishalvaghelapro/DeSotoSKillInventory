@@ -38,7 +38,7 @@
                         <div class="col-md-3 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
 
-                                <form asp-controller="Core" asp-action="Login">
+                                <form>
 
                                     <div class="d-flex justify-content-center mb-4 pb-1">
                                         <i class="fas fa-cubes fa-2x" style="color: #ff6219;"></i>
@@ -46,23 +46,19 @@
                                     </div>
 
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" id="validationCustom01" value="" placeholder="Firstname Lastname" required>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
+                                       
+                                        <input type="email" id="email"  class="form-control" placeholder="user@desotoTechnologies.com" required>
+                                        <label class="form-label" for="email"></label>
                                     </div>
                                     <br />
                                     <div class="col-md-10">
-                                        <input type="password" class="form-control" id="validationCustom01" value="" placeholder="password" required>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
+                                        <input type="password" id="Password" class="form-control" placeholder="password" required>
+                                        <label class="form-label" for="Password"></label>
                                     </div>
                                     <br />
 
-                                    <div class="col-10">
-                                        <button class="btn btn-primary w-100" type="submit">Login</button>
-                                    </div>
+                                        <button class="btn btn-primary w-100" type="submit" onclick="Login();">Login</button>
+                       
                                     <div class="col-12">
                                         <p class="small mb-0">Don't have account? <a href="/Core/Registration">Create an account</a></p>
                                     </div>
@@ -83,3 +79,12 @@
 
 </body>
 </html>
+@section scripts{
+
+
+
+    <script src="~/js/site.js"></script>
+  
+
+
+}
