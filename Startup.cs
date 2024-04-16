@@ -20,7 +20,36 @@ namespace SkillInventory
         }
         public void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
         {
-            services.AddRazorPages();
+            var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
+            var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+
+                };
+            });
+            //Jwt configuration ends here  
+            //Jwt configuration ends here    
+            services.AddMvc()
+            .AddSessionStateTempDataProvider();
+            services.AddSession();
+            services.AddHealthChecks();
+            services.AddHttpClient();
         }
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {
@@ -32,12 +61,29 @@ namespace SkillInventory
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
+            app.UseSession();
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
+
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+            
+                    endpoints.MapControllerRoute(
+                 name: "default",
+                 pattern: "{controller=Home}/{action=Login}/{id?}");
                 endpoints.MapControllerRoute(
-              name: "default",
+              name: "Registration",
               pattern: "{controller=Home}/{action=Registration}/{id?}");
                 endpoints.MapControllerRoute(
                 name: "Test",
@@ -46,9 +92,7 @@ namespace SkillInventory
                 name: "AddSkill",
                 pattern: "{controller=Home}/{action=AddSkill}/{id?}");
               
-                endpoints.MapControllerRoute(
-                name: "Login",
-                pattern: "{controller=Home}/{action=Login}/{id?}");
+         
                 endpoints.MapControllerRoute(
                 name: "Dashboard",
                 pattern: "{controller=Home}/{action=Dashboard}/{id?}");

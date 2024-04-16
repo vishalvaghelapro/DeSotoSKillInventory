@@ -25,11 +25,11 @@ namespace SkillInventory.Controllers
             return View();
         }
         [AllowAnonymous]
-        [HttpPost]
+        [HttpGet]
         public IActionResult Login(Employee employee)
         {
             SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-            Employee lstroll = new Employee();
+            LoginData loginData = new LoginData();
             SqlCommand cmd = conn.CreateCommand();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -37,33 +37,46 @@ namespace SkillInventory.Controllers
             cmd.CommandType = CommandType.StoredProcedure;
             
     
-            cmd.Parameters.AddWithValue("@FirstName", employee.Email);
+            cmd.Parameters.AddWithValue("@Email", employee.Email);
            
             cmd.Parameters.AddWithValue("@Password", EncryptPasswordBase64(employee.Password) == null ? "" : EncryptPasswordBase64(employee.Password));
-            Employee res = new Employee();
+            LoginData res = new LoginData();
             SqlParameter Status = new SqlParameter();
             Status.ParameterName = "@Isvalid";
             Status.SqlDbType = SqlDbType.Bit;
 
             Status.Direction = ParameterDirection.Output;
             cmd.Parameters.Add(Status);
+            SqlParameter ObjRoll = new SqlParameter();
+            ObjRoll.ParameterName = "@Roll";
+            ObjRoll.SqlDbType = SqlDbType.NVarChar;
+            ObjRoll.Size = 100;
+            ObjRoll.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(ObjRoll);
             conn.Open();
             cmd.ExecuteNonQuery();
 
             conn.Close();
+        
+            var roll = Convert.ToString(ObjRoll.Value);
             if (Convert.ToString(Status.Value) == Convert.ToString(true))
             {
                 token = GenerateJSONWebToken(employee);
+                loginData.JwtString = Convert.ToString(token);
+                loginData.UserRoll = EncryptPasswordBase64(roll);
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpContext.Session.SetString("JWToken", token);
                 //  return RedirectToAction("HomeController/Home");
-                return RedirectToAction("Home", "Home");
+                    return new JsonResult(loginData);
+
             }
             else
             {
                 return Content("User is Not Exiest");
             }
+
+            return new JsonResult("");
             
 
         }
@@ -73,7 +86,7 @@ namespace SkillInventory.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-            new Claim(JwtRegisteredClaimNames.Name, employee.Roll),
+            new Claim(JwtRegisteredClaimNames.Email, employee.Email),
             new Claim(JwtRegisteredClaimNames.Prn, employee.Password)
             };
 

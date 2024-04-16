@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SkillInventory.Models;
 using System.Diagnostics;
 
@@ -12,15 +13,22 @@ namespace SkillInventory.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize]
         public IActionResult Dashboard()
         {
             return View();
         }
+
+        public IActionResult ViewSkill()
+        {
+            return View();
+        }
+   
         public IActionResult Registration()
         {
             return View();
         }
+        [Authorize]
         public IActionResult AddSkill()
         {
             return View();
@@ -36,7 +44,11 @@ namespace SkillInventory.Controllers
             return View();
         }
 
-
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Home");
+        }
 
     }
 }

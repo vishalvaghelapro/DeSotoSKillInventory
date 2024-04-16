@@ -1,16 +1,14 @@
-﻿
-
-function AddEmpData() {
-
+﻿function AddEmpData() {
+    var Email = $('#Username').val() + $("#Domain").text();
     var objData = {
         FirstName: $('#FName').val(),
         LastName: $('#LName').val(),
-        Email: $('#Email').val(),
+        Email: Email,
         Department: $('#DropDepartment').val(),
         roll: $('input[name="Roll"]:checked').val(),
         password: $("#Password").val()
     };
-    $.ajax({
+        $.ajax({
         url: '/Employee/AddEmployee',
         type: 'POST',
         data: objData,
@@ -46,94 +44,52 @@ function AddEmpData() {
 
 }
 
+
 function Login() {
+    var Email = $('#Username').val() + $('#Domain').text();
+    var password = $("#Password").val();
+
     var objData = {
-        Email: $("#email").val(),
-        password: $("#Password").val()
+        Email: Email,
+        password: password
     };
+
     console.log(objData);
-    console.log(objData.admin_id);
-
-    var full_name = objData.admin_id;
-    var name = full_name.split(' ');
-    var first_name = name[0];
-    var last_name = name[1];
-
-    objData.FirstName = first_name;
-    objData.LastName = last_name;
-    sessionStorage.setItem("FirstName", objData.FirstName),
-        sessionStorage.setItem("LastName", objData.LastName),
-
-        $.ajax({
-            url: '/Login/AdminLogin',
-            type: 'Post',
+       $.ajax({
+            url: '/Login/Login',
+            type: 'Get',
             data: objData,
             contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
-            success: function (res) {
-
-                if (res.objRoll != null & res.oblogin != null) {
-                    sessionStorage.setItem("token", res.oblogin),
-                        headerToken = res.oblogin;
-                    sessionStorage.setItem("Role", res.objRoll),
-                        RoleDecrypt();
-                    function RoleDecrypt() {
-                        var objAuth = {
-                            Oblogin: sessionStorage.getItem("token", res.oblogin),
-                            ObjRoll: sessionStorage.getItem("Role", res.objRoll),
-                        };
-                        $.ajax({
-                            url: '/Login/RoleDecrypt',
-                            type: 'Post',
-                            dataType: 'json',
-                            data: objAuth,
-                            contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
-                            success: function (role) {
-                                if (role === "Employee") {
-                                    $.ajax({
-                                        url: '/Home/EmployeeDetails',
-                                        type: 'Get',
-                                        data: headerToken,
-                                        headers: {
-                                            'Authorization': 'Bearer ' + headerToken
-                                            //"Authorization": "Bearer your_access_token"
-                                        },
-
-                                    })
-
-                                    window.location = "/home/EmployeeDetail";
-                                    //$("Welcome").val(alert("Login Successed"));
-
-                                }
-                                else if (role === "Admin") {
-                                    //EmpDetails(res);
-                                    location.href = "/home/EmployeeDetail";
-                                    //history.pushState(null, null, "/home/EmployeeDetail");
-                                    //$("Welcome").val(alert("Login Successed"));
-                                }
-                                else {
-                                    alert("User Doesn't Exit");
-                                    isSessionStorageClear();
-                                }
-                                $("Welcome").val(alert("Login Successed"));
-                                window.location = "/home/EmployeeDetail";
-                            }
-                        });
+           success: function (res) {
+               console.log(res);
+               if (res.jwtString != null & res.userRoll != null)
+               {
+                   sessionStorage.setItem("token", res.jwtString),
+                   sessionStorage.setItem("roll", res.userRoll)
+                }
+               else if (res.jwtString == null & res.userRoll == null)
+               {
+                   alert('Login Failed');
+                   isSessionStorageClear();
+                   sessionStorage.clear();
+               }
+               else {
+                   alert('Something Went Wrong!');
+                   isSessionStorageClear();
                     }
-                }
-                else if (res.objRoll == null & res.oblogin == null) {
-                    alert('Login Failed');
-                    isSessionStorageClear();
-                    sessionStorage.clear();
-                }
-                else {
-                    alert('Something Went Wrong!');
-                    isSessionStorageClear();
-                }
 
-            },
+               window.location = "/home/Dashboard";
+               //$("Welcome").val(alert("Login Successed"));
+
+           },
             error: function () {
                 alert("Invalid username or password!");
             }
         });
 
+}
+
+function logout() {
+    sessionStorage.clear(),
+        $("#Login").modal('hide')
 }
