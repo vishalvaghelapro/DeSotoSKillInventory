@@ -40,30 +40,39 @@ namespace SkillInventory.Controllers
             cmd.Parameters.AddWithValue("@Email", employee.Email);
            
             cmd.Parameters.AddWithValue("@Password", EncryptPasswordBase64(employee.Password) == null ? "" : EncryptPasswordBase64(employee.Password));
-            LoginData res = new LoginData();
+           
             SqlParameter Status = new SqlParameter();
             Status.ParameterName = "@Isvalid";
             Status.SqlDbType = SqlDbType.Bit;
-
             Status.Direction = ParameterDirection.Output;
             cmd.Parameters.Add(Status);
+
+
             SqlParameter ObjRoll = new SqlParameter();
             ObjRoll.ParameterName = "@Roll";
             ObjRoll.SqlDbType = SqlDbType.NVarChar;
             ObjRoll.Size = 100;
             ObjRoll.Direction = ParameterDirection.Output;
             cmd.Parameters.Add(ObjRoll);
+
+            SqlParameter UserId = new SqlParameter();
+            UserId.ParameterName = "@EmployeeId";
+            UserId.SqlDbType = SqlDbType.Int;
+            UserId.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(UserId);
             conn.Open();
             cmd.ExecuteNonQuery();
 
             conn.Close();
         
             var roll = Convert.ToString(ObjRoll.Value);
+            //var employeeId = Convert.To(UserId.Value);
             if (Convert.ToString(Status.Value) == Convert.ToString(true))
             {
                 token = GenerateJSONWebToken(employee);
                 loginData.JwtString = Convert.ToString(token);
                 loginData.UserRoll = EncryptPasswordBase64(roll);
+                loginData.EmployeeId = Convert.ToInt32(UserId.Value);
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpContext.Session.SetString("JWToken", token);

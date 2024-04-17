@@ -13,7 +13,7 @@ namespace SkillInventory.Controllers
         {
             _logger = logger;
         }
-        [Authorize]
+   
         public IActionResult Dashboard()
         {
             return View();
@@ -28,7 +28,7 @@ namespace SkillInventory.Controllers
         {
             return View();
         }
-        [Authorize]
+     
         public IActionResult AddSkill()
         {
             return View();

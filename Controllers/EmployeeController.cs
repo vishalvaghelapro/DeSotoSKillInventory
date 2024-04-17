@@ -13,6 +13,8 @@ namespace SkillInventory.Controllers
         {
             Configuration = configuration;
         }
+
+        private List<EmployeeSkill> employeesSkill = new List<EmployeeSkill>();
         [HttpGet]
         public JsonResult GetSkillName()
         {
@@ -165,38 +167,54 @@ namespace SkillInventory.Controllers
         [HttpPost]
         public JsonResult AddSkill(Employee employee)
         {
-           
+
+
+            string status = "";
+
+            // Validate employee data (consider adding more validations as needed)
+            if (employee == null || employee.EmployessSkillList.Count == 0)
+            {
+                status = "null";
+                return Json(status);
+            }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
                 {
-                    SqlCommand cmd = new SqlCommand("InsertData", conn);
-                    cmd.CommandType = CommandType.StoredProcedure; // Ensure it's a stored procedure
-
-                    cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
-                    cmd.Parameters.AddWithValue("@LastName", employee.LastName);
-                    cmd.Parameters.AddWithValue("@Email", employee.Email);
-                    cmd.Parameters.AddWithValue("@Department", employee.Department);
-                    cmd.Parameters.AddWithValue("@Roll", employee.Roll);
-                    cmd.Parameters.AddWithValue("@Password", EncryptPasswordBase64(employee.Password));
+                    SqlCommand cmd = new SqlCommand("AddSkill", conn);
+                    
 
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();  // This line might throw an exception if the stored procedure raises RAISERROR
                 }
 
-                return Json("");
-                // return Json(new { status = "Saved" }); // Indicate success without revealing sensitive data
+                status = "Success";
+                return Json(status);
             }
-            catch (Exception ex)
+            catch (SqlException ex)  // Catch specific SqlException for database-related errors
             {
+                // Check for specific error codes or messages from the stored procedure's RAISERROR
+                if (ex.Message.Contains("already exists"))  // Example check for duplicate email error
+                {
+                    status = "Error: Email already exists";
+                }
+                else
+                {
+                    status = "Error: An error occurred while adding the employee.";
+                }
+
                 // Log the exception for debugging
                 Console.WriteLine(ex.Message);
-                
 
-                // Return a generic error message to avoid exposing details
-
+                return Json(status);
             }
-            return Json("");
+            catch (Exception ex)  // Catch any other unexpected exceptions
+            {
+                status = "Error: An unexpected error occurred.";
+                Console.WriteLine(ex.Message);
+                return Json(status);
+            }
         }
     }
     

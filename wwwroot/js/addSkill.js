@@ -25,18 +25,68 @@ $("body").on("click", ".btn-delete", function () {
     $(this).parents("tr").remove();
 });
 
-
 function AddSkill() {
-    var objData = {};
-    var rows = document.querySelectorAll('tr');
-    for (var i = 1; i < rows.length; i++) {
-        var cells = rows[i].querySelectorAll('td');
-        var skillName = cells[0].textContent.trim();
-        var proficiencyLevel = cells[1].textContent.trim();
-        objData[skillName] = proficiencyLevel;
+    //var keys = [], arrayObj = [];
+    //$("#table thead tr th").each(function () {
+    //    keys.push($(this).html());
+    //});
+
+    //$("#table tbody tr").each(function () {
+    //    var obj = {}, i = 0;
+    //    $(this).children("td").each(function () {
+    //        obj[keys[i]] = $(this).html();
+    //        i++;
+    //    })
+    //    arrayObj.push(obj);
+    //});
+    //$('body').append(JSON.stringify({ yourObj: arrayObj }));
+    //return;//remove this line
+
+
+    const tableRows = document.getElementById("myForm").getElementsByTagName("tr");
+    let employeeId = sessionStorage.getItem('UserId');
+    //console.log(EmployeeId);
+    // 2. Create an empty array to store objects:
+    const skillData = [];
+
+    // 3. Loop through each table row:
+    for (let i = 1; i < tableRows.length; i++) { // Start from index 1 to skip the header row
+        const row = tableRows[i];
+
+        // 4. Create an object for each row:
+        const skillObject = {
+            //EmployeeId,
+            SkillName: row.cells[0].textContent, // Assuming "SkillName" is in the first cell (index 0)
+            Proficiency: row.cells[1].textContent
+            // Assuming "Proficiency" is in the second cell (index 1)
+        };
+
+        // 5. Add the object to the skillData array:
+
+        skillData.push(skillObject);
+        
+      
+
     }
-    console.log(objData);
+    var employeeSkills = {
+        EmployeeId: employeeId,
+        // Other employee details
+        SkillList: skillData
+    };
+    $.ajax({
+        type: "POST",
+        url: '/Employee/AddSkill',
+        data: employeeSkills,
+        contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
+        dataType: "json",
+        success: function (response) {
+            alert(response.d);
+        }
+    })
+
 }
+
+
 function updateEmail() {
     const username = document.getElementById("Email").value;
     const domain = "@domain"; // Replace "@domain" with your actual domain name

@@ -65,7 +65,8 @@ function Login() {
                if (res.jwtString != null & res.userRoll != null)
                {
                    sessionStorage.setItem("token", res.jwtString),
-                   sessionStorage.setItem("roll", res.userRoll)
+                       sessionStorage.setItem("roll", res.userRoll),
+                       sessionStorage.setItem("UserId", res.employeeId)
                 }
                else if (res.jwtString == null & res.userRoll == null)
                {
