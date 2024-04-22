@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
@@ -76,8 +77,9 @@ namespace SkillInventory.Controllers
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpContext.Session.SetString("JWToken", token);
+                HttpContext.Session.SetInt32("EmpID", Convert.ToInt32(UserId.Value));
                 //  return RedirectToAction("HomeController/Home");
-                    return new JsonResult(loginData);
+                return new JsonResult(loginData);
 
             }
             else

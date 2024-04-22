@@ -57,7 +57,7 @@ function AddSkill() {
         const skillObject = {
             //EmployeeId,
             SkillName: row.cells[0].textContent, // Assuming "SkillName" is in the first cell (index 0)
-            Proficiency: row.cells[1].textContent
+            ProficiencyLevel: row.cells[1].textContent
             // Assuming "Proficiency" is in the second cell (index 1)
         };
 
@@ -68,7 +68,7 @@ function AddSkill() {
       
 
     }
-    var employeeSkills = {
+    var employee = {
         EmployeeId: employeeId,
         // Other employee details
         SkillList: skillData
@@ -76,11 +76,11 @@ function AddSkill() {
     $.ajax({
         type: "POST",
         url: '/Employee/AddSkill',
-        data: employeeSkills,
+        data: employee,
         contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
         dataType: "json",
         success: function (response) {
-            alert(response.d);
+ 
         }
     })
 
