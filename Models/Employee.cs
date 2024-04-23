@@ -13,9 +13,9 @@ namespace SkillInventory.Models
         public string? Department { get; set; }
         public string? Role { get; set; }
         public string? Password { get; set; }
-        public List<EmployessSkills>? SkillList { get; set; }
+        public List<EmployesSkills>? SkillList { get; set; }
     }
-    public class EmployessSkills
+    public class EmployesSkills
     {
         public int? EmployeeSkillId { get; set; }
         public int? EmployeeId { get; set; }

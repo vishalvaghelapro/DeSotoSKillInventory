@@ -237,7 +237,7 @@ namespace SkillInventory.Controllers
                 conn.Open();
                 da.Fill(dt);
                 conn.Close();
-                List<EmployessSkills> empSkillList = GetEmpSkill();
+                List<EmployesSkills> empSkillList = GetEmpSkill();
                 foreach (DataRow dr in dt.Rows)
                 {
                     employees.Add(
@@ -263,7 +263,7 @@ namespace SkillInventory.Controllers
                 return Json(new { error = ex.Message }); // Return structured error response
             }
         }
-        public List<EmployessSkills> GetEmpSkill()
+        public List<EmployesSkills> GetEmpSkill()
         {
             Console.WriteLine("started");
             try
@@ -272,7 +272,7 @@ namespace SkillInventory.Controllers
                 int? employeeId = HttpContext.Session.GetInt32("EmpID");
 
                 SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-                List<EmployessSkills> empSkills = new List<EmployessSkills>();
+                List<EmployesSkills> empSkills = new List<EmployesSkills>();
                 SqlCommand cmd = conn.CreateCommand();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -286,7 +286,7 @@ namespace SkillInventory.Controllers
                 foreach (DataRow dr in dt.Rows)
                 {
                     empSkills.Add(
-                        new EmployessSkills
+                        new EmployesSkills
                         {
                             EmployeeSkillId = Convert.ToInt32(dr["EmployeeSkillId"]),
                             EmployeeId = Convert.ToInt32(dr["EmployeeId"]),
@@ -298,7 +298,7 @@ namespace SkillInventory.Controllers
                 }
                 if (empSkills.Count == 0)
                 {
-                    return new List<EmployessSkills>(); // Return an empty list
+                    return new List<EmployesSkills>(); // Return an empty list
                 }
 
                 return empSkills;
@@ -308,7 +308,7 @@ namespace SkillInventory.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new List<EmployessSkills>();  // Return informative error response
+                return new List<EmployesSkills>();  // Return informative error response
             }
 
         }
@@ -317,7 +317,7 @@ namespace SkillInventory.Controllers
             try
             {
                 SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-                List<EmployessSkills> lst = new List<EmployessSkills>();
+                List<EmployesSkills> lst = new List<EmployesSkills>();
                 SqlCommand cmd = conn.CreateCommand();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -338,6 +338,88 @@ namespace SkillInventory.Controllers
                 Console.WriteLine(ex.Message);
             }
             return new JsonResult("Data Deleted");
+        }
+        public JsonResult EditEmp(int id)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+                List<EmployesSkills> empSkills = new List<EmployesSkills>();
+                SqlCommand cmd = conn.CreateCommand();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "getByIdEd";
+
+                cmd.Parameters.AddWithValue("@EmployeeSkillId", id);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                //cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                conn.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                     empSkills.Add(
+                        new EmployesSkills
+                        {
+                            EmployeeSkillId = Convert.ToInt32(dr["EmployeeSkillId"]),
+                            EmployeeId = Convert.ToInt32(dr["EmployeeId"]),
+                            SkillName = Convert.ToString(dr["SkillName"]),
+                            ProficiencyLevel = Convert.ToString(dr["ProficiencyLevel"]),
+                         
+                        });
+
+
+                }
+
+                var data = empSkills;
+                return new JsonResult(data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+
+            return new JsonResult(null);
+        }
+        [HttpPost]
+        public JsonResult UpdateEmp(Employee employee)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+                List<Employee> lst = new List<Employee>();
+                SqlCommand cmd = conn.CreateCommand();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UpdateData";
+
+                cmd.Parameters.AddWithValue("@EmployeeSkillId",employee);
+                cmd.Parameters.AddWithValue("@EmployeeId", employee.EmployeeId);
+                cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", employee.LastName);
+
+                cmd.Parameters.AddWithValue("@Department", employee.Department);
+                cmd.Parameters.AddWithValue("@SkillName", employee);
+                cmd.Parameters.AddWithValue("@ProficiencyLevel", employee.SkillList);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return new JsonResult("Data is Updated");
         }
 
     }

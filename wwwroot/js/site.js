@@ -43,7 +43,35 @@
     });
 
 }
+function UpdateEmpBtn() {
+    var objData = {
+        EmployeeSkillId: $('#ESId').val(),
+        EmployeeId: $('#EId').val(),
+        FirstName: $('#FName').val(),
+        LastName: $('#LName').val(),
+        Department: $('#DropDepartment').val(),
+        SkillName: $('#SkillName').val(),
+        ProficiencyLevel: $("input[name='Proficiency']:checked").val(),
+    };
 
+    $.ajax({
+        url: '/Employee/UpdateEmp',
+        type: 'Post',
+        data: objData,
+        contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
+
+        success: function () {
+
+            $("#EmployeeMadal").modal('hide'),
+                alert('Data Updated Successfully!');
+            window.location.reload();
+        },
+        error: function () {
+            alert("Data Couldn't be Updated!");
+        }
+
+    })
+}
 
 function Login() {
     var Email = $('#Username').val() + $('#Domain').text();
