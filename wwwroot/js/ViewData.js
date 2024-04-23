@@ -40,70 +40,90 @@ function OnSuccess(response) {
         ],
 
         columns: [
-                {
-                "data":'employeeSkillId'
-                },
+            {
+                "data": 'employeeSkillId'
+            },
 
-                {
-                    data:null,
-                    render: function (data, type, row) {
-                        return employee.employeeId; // Use employee object for ID
-                    }
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return employee.employeeId; // Use employee object for ID
+                }
 
             },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return employee.firstName
-                    }
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return employee.firstName
+                }
 
-                },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return employee.lastName
-                    }
-                },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return employee.email
-                    }
-                },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return employee.department
-                    }
-                },
-           
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return employee.roll
-                    }
+            },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return employee.lastName
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return employee.email
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return employee.department
+                }
+            },
+
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return employee.role
+                }
 
 
-                },
-                {
-                    "data": 'proficiencyLevel',
-                },
-                {
-                    "data": 'skillName',
-                },
+            },
+            {
+                "data": 'proficiencyLevel',
+            },
+            {
+                "data": 'skillName',
+            },
 
-                {
-                    data: null,
+            {
+                data: null,
 
-                    render: function (row) {
-                        if (sessionStorage.getItem("Role") !== 'RW1wbG95ZWU=') { // Check for 'Employee' role
-                            return "<a href='#' id='BtnDelete' class='btn btn-danger' onclick=DeleteBtn(" + row.employeeSkillId + "); >Delete</a>";
-                        } else {
-                            document.getElementById("form").style.display = "none";
-                            return ""; // Return nothing for 'Employee' role
-                        }
+                render: function (row) {
+                    if (sessionStorage.getItem("Role") !== 'RW1wbG95ZWU=') { // Check for 'Employee' role
+                        return "<a href='#' id='BtnDelete' class='btn btn-danger' onclick=DeleteBtn(" + row.employeeSkillId + "); >Delete</a>";
+                    } else {
+                        document.getElementById("form").style.display = "none";
+                        return ""; // Return nothing for 'Employee' role
                     }
-                },
+                }
+            },
+
         ]
     });
+
+}
+
+function DeleteBtn(employeeSkillId) {
+
+    $.ajax({
+        url: '/Employee/DeleteEmp?id=' + employeeSkillId,
+        data: {},
+        success: function () {
+            alert("Record Deleted!");
+            window.location.reload();
+            getEmpData(res);
+        },
+        error: function () {
+            alert("Data can't be deleted!");
+        }
+
+    })
+
 }

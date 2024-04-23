@@ -5,117 +5,117 @@
 <section>
 
 
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">Employee Data</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Employee Data</h3>
 
-    <div class="container">
-        <div class="row">
+            <div class="container">
+                <div class="row">
                     <div class="col-12">
-                <div class="data_table">
+                        <div class="data_table">
 
                             <table id="empDataTable" class="table table-striped table-bordered pt-5">
-                        <thead>
-                            <tr class="table-dark">
-                                <th>ESId</th>
-                                <th>EId</th>
-                                <th>FirstName</th>
-                                <th>LastName</th>
-                                <th>Email</th>  
-                                <th>Department</th>
-                                <th>Role</th>
-                                <th>ProficiencyLevel</th>
-                                <th>SkillName</th>
-                                <th>Delete</th>
-                     
+                                <thead>
+                                    <tr class="table-dark">
+                                        <th>ESId</th>
+                                        <th>EId</th>
+                                        <th>FirstName</th>
+                                        <th>LastName</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Role</th>
+                                        <th>ProficiencyLevel</th>
+                                        <th>SkillName</th>
+                                        <th>Delete</th>
 
-                            </tr>
-                        </thead>
-                    </table>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Button trigger modal -->
+                <!-- Modal -->
+                <div id="EmployeeMadal" class="madal fade modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="text-primary modal-title">Edit Employee</h1>
+                                @*<button class="btn btn-sm btn-outline-danger" aria-label="Close"></button> *@
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-row">
+                                        <label for="EId"></label>
+                                        <input type="hidden" class="form-control" id="EId">
+                                        <label for="ESId"></label>
+                                        <input type="hidden" class="form-control" id="ESId">
+                                        <div class="">
+                                            <label for="FName">First name</label>
+                                            <input type="text" class="form-control" id="FName">
+                                        </div><br />
+                                        <div class="">
+                                            <label for="LName">Last name</label>
+                                            <input type="text" class="form-control" id="LName">
+                                        </div><br />
+                                        <div class="">
+                                            <label for="Email">Email</label>
+                                            <input type="email" class="form-control" id="Email">
+                                        </div><br />
+                                        <div class="">
+                                            <label for="DropDepartment">Department</label>
+                                            <select id="DropDepartment" class="form-control">
+                                                <option>Select</option>
+                                            </select>
+                                        </div><br />
+                                        <div class="">
+                                            <label for="DropEditSkill">Skill</label>
+                                            <select id="DropEditSkill" class="form-control">
+                                                <option>Select</option>
+                                            </select>
+                                        </div><br />
+                                        @*      <div class="">
+                                        <label for="Proficiency">Proficiency Level:</label>
+                                        <input id="Proficiency" class="form-control">
+                                        </div><br /> *@
+                                        <div class="form-group col-md mt-2 mb-3">
+                                            <label for="proficiencyLevel">Proficiency Level&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+                                            <div class="form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Proficiency" id="proficiencyLevel" for="proficiencyLevel" value="Beginner">
+                                                <label class="form-check-label" for="beginnerRadio">
+                                                    Beginner
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Proficiency" id="proficiencyLevel" for="proficiencyLevel" value="Intermediate">
+                                                <label class="form-check-label" for="intermediateRadio">
+                                                    Intermediate
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <input class="form-check-input" type="radio" name="Proficiency" id="proficiencyLevel" for="proficiencyLevel" value="Expert">
+                                                <label class="form-check-label" for="expertRadio">
+                                                    Expert
+                                                </label>
+                                            </div>
+
+
+                                            <button type="button" class="justify-content-center btn btn-primary mt-4" onclick="UpdateEmpBtn();" id="UpdateBtn">Update</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-
-    <!-- Button trigger modal -->
-    <!-- Modal -->
-    <div id="EmployeeMadal" class="madal fade modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="text-primary modal-title">Edit Employee</h1>
-                    @*<button class="btn btn-sm btn-outline-danger" aria-label="Close"></button> *@
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-row">
-                            <label for="EId"></label>
-                            <input type="hidden" class="form-control" id="EId">
-                            <label for="ESId"></label>
-                            <input type="hidden" class="form-control" id="ESId">
-                            <div class="">
-                                <label for="FName">First name</label>
-                                <input type="text" class="form-control" id="FName">
-                            </div><br />
-                            <div class="">
-                                <label for="LName">Last name</label>
-                                <input type="text" class="form-control" id="LName">
-                            </div><br />
-                            <div class="">
-                                <label for="Email">Email</label>
-                                <input type="email" class="form-control" id="Email">
-                            </div><br />
-                            <div class="">
-                                <label for="DropDepartment">Department</label>
-                                <select id="DropDepartment" class="form-control">
-                                    <option>Select</option>
-                                </select>
-                            </div><br />
-                            <div class="">
-                                <label for="DropEditSkill">Skill</label>
-                                <select id="DropEditSkill" class="form-control">
-                                    <option>Select</option>
-                                </select>
-                            </div><br />
-                            @*      <div class="">
-                            <label for="Proficiency">Proficiency Level:</label>
-                            <input id="Proficiency" class="form-control">
-                            </div><br /> *@
-                            <div class="form-group col-md mt-2 mb-3">
-                                <label for="proficiencyLevel">Proficiency Level&nbsp;&nbsp;&nbsp;&nbsp;:</label>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Proficiency" id="proficiencyLevel" for="proficiencyLevel" value="Beginner">
-                                    <label class="form-check-label" for="beginnerRadio">
-                                        Beginner
-                                    </label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Proficiency" id="proficiencyLevel" for="proficiencyLevel" value="Intermediate">
-                                    <label class="form-check-label" for="intermediateRadio">
-                                        Intermediate
-                                    </label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Proficiency" id="proficiencyLevel" for="proficiencyLevel" value="Expert">
-                                    <label class="form-check-label" for="expertRadio">
-                                        Expert
-                                    </label>
-                                </div>
-
-
-                                <button type="button" class="justify-content-center btn btn-primary mt-4" onclick="UpdateEmpBtn();" id="UpdateBtn">Update</button>
-                            </div>
-                            </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
     </div>
-</div>
-</div>
-
-</div>
 </section>
 @section scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -123,8 +123,7 @@
     <script src="~/lib/DataTable/jquery.dataTables.js"></script>
     <script src="~/lib/DataTable/jquery.dataTables.min.js"></script>
     <script src="~/js/ViewData.js"></script>
-    <script src="~/js/custom.js"></script>
-    <script src="~/js/customsc.js"></script>
+
 
 
 

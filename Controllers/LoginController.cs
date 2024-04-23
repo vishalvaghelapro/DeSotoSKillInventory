@@ -36,12 +36,12 @@ namespace SkillInventory.Controllers
             DataTable dt = new DataTable();
             cmd.CommandText = "LoginSP";
             cmd.CommandType = CommandType.StoredProcedure;
-            
-    
+
+
             cmd.Parameters.AddWithValue("@Email", employee.Email);
-           
+
             cmd.Parameters.AddWithValue("@Password", EncryptPasswordBase64(employee.Password) == null ? "" : EncryptPasswordBase64(employee.Password));
-           
+
             SqlParameter Status = new SqlParameter();
             Status.ParameterName = "@Isvalid";
             Status.SqlDbType = SqlDbType.Bit;
@@ -50,7 +50,7 @@ namespace SkillInventory.Controllers
 
 
             SqlParameter ObjRoll = new SqlParameter();
-            ObjRoll.ParameterName = "@Roll";
+            ObjRoll.ParameterName = "@Role";
             ObjRoll.SqlDbType = SqlDbType.NVarChar;
             ObjRoll.Size = 100;
             ObjRoll.Direction = ParameterDirection.Output;
@@ -65,14 +65,14 @@ namespace SkillInventory.Controllers
             cmd.ExecuteNonQuery();
 
             conn.Close();
-        
-            var roll = Convert.ToString(ObjRoll.Value);
+
+            var role = Convert.ToString(ObjRoll.Value);
             //var employeeId = Convert.To(UserId.Value);
             if (Convert.ToString(Status.Value) == Convert.ToString(true))
             {
                 token = GenerateJSONWebToken(employee);
                 loginData.JwtString = Convert.ToString(token);
-                loginData.UserRoll = EncryptPasswordBase64(roll);
+                loginData.UserRoll = EncryptPasswordBase64(role);
                 loginData.EmployeeId = Convert.ToInt32(UserId.Value);
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -88,7 +88,7 @@ namespace SkillInventory.Controllers
             }
 
             return new JsonResult("");
-            
+
 
         }
         private string GenerateJSONWebToken(Employee employee)

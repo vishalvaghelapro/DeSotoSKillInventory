@@ -5,10 +5,10 @@
         LastName: $('#LName').val(),
         Email: Email,
         Department: $('#DropDepartment').val(),
-        roll: $('input[name="Roll"]:checked').val(),
+        role: $('input[name="Role"]:checked').val(),
         password: $("#Password").val()
     };
-        $.ajax({
+    $.ajax({
         url: '/Employee/AddEmployee',
         type: 'POST',
         data: objData,
@@ -55,38 +55,36 @@ function Login() {
     };
 
     console.log(objData);
-       $.ajax({
-            url: '/Login/Login',
-            type: 'Get',
-            data: objData,
-            contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
-           success: function (res) {
-               console.log(res);
-               if (res.jwtString != null & res.userRoll != null)
-               {
-                   sessionStorage.setItem("token", res.jwtString),
-                       sessionStorage.setItem("roll", res.userRoll),
-                       sessionStorage.setItem("UserId", res.employeeId)
-                }
-               else if (res.jwtString == null & res.userRoll == null)
-               {
-                   alert('Login Failed');
-                   isSessionStorageClear();
-                   sessionStorage.clear();
-               }
-               else {
-                   alert('Something Went Wrong!');
-                   isSessionStorageClear();
-                    }
-
-               window.location = "/home/Dashboard";
-               //$("Welcome").val(alert("Login Successed"));
-
-           },
-            error: function () {
-                alert("Invalid username or password!");
+    $.ajax({
+        url: '/Login/Login',
+        type: 'Get',
+        data: objData,
+        contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
+        success: function (res) {
+            console.log(res);
+            if (res.jwtString != null & res.userRoll != null) {
+                sessionStorage.setItem("token", res.jwtString),
+                    sessionStorage.setItem("role", res.userRoll),
+                    sessionStorage.setItem("UserId", res.employeeId)
             }
-        });
+            else if (res.jwtString == null & res.userRoll == null) {
+                alert('Login Failed');
+                isSessionStorageClear();
+                sessionStorage.clear();
+            }
+            else {
+                alert('Something Went Wrong!');
+                isSessionStorageClear();
+            }
+
+            window.location = "/home/Dashboard";
+            //$("Welcome").val(alert("Login Successed"));
+
+        },
+        error: function () {
+            alert("Invalid username or password!");
+        }
+    });
 
 }
 

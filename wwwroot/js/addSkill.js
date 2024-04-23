@@ -64,8 +64,8 @@ function AddSkill() {
         // 5. Add the object to the skillData array:
 
         skillData.push(skillObject);
-        
-      
+
+
 
     }
     var employee = {
@@ -80,7 +80,7 @@ function AddSkill() {
         contentType: 'application/x-www-form-urlencoded;charset=utf-8;',
         dataType: "json",
         success: function (response) {
- 
+
         }
     })
 

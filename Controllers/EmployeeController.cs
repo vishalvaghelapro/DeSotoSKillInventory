@@ -111,7 +111,7 @@ namespace SkillInventory.Controllers
                 string.IsNullOrEmpty(employee.LastName) ||
                 string.IsNullOrEmpty(employee.Email) ||
                 string.IsNullOrEmpty(employee.Department) ||
-                string.IsNullOrEmpty(employee.Roll) ||
+                string.IsNullOrEmpty(employee.Role) ||
                 string.IsNullOrEmpty(employee.Password))
             {
                 status = "null";
@@ -129,7 +129,7 @@ namespace SkillInventory.Controllers
                     cmd.Parameters.AddWithValue("@LastName", employee.LastName);
                     cmd.Parameters.AddWithValue("@Email", employee.Email);
                     cmd.Parameters.AddWithValue("@Department", employee.Department);
-                    cmd.Parameters.AddWithValue("@Roll", employee.Roll);
+                    cmd.Parameters.AddWithValue("@Role", employee.Role);
                     cmd.Parameters.AddWithValue("@Password", EncryptPasswordBase64(employee.Password));
 
                     conn.Open();
@@ -224,7 +224,7 @@ namespace SkillInventory.Controllers
             try
             {
                 var employeeId = HttpContext.Session.GetInt32("EmpID"); ;
-               
+
                 SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
                 List<Employee> employees = new List<Employee>();
                 SqlCommand cmd = conn.CreateCommand();
@@ -248,9 +248,9 @@ namespace SkillInventory.Controllers
                             LastName = Convert.ToString(dr["LastName"]),
                             Email = Convert.ToString(dr["Email"]),
                             Department = Convert.ToString(dr["Department"]),
-                            Roll = Convert.ToString(dr["Roll"]),
+                            Role = Convert.ToString(dr["Role"]),
                             SkillList = empSkillList
-                        }) ;
+                        });
 
                 }
                 var data = employees;
@@ -278,7 +278,7 @@ namespace SkillInventory.Controllers
                 DataTable dt = new DataTable();
 
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "Select * from EmployeesSkill where EmployeeID = @employeeId";
+                cmd.CommandText = "Select * from EmployeesSkill where EmployeeID = @employeeId AND IsDelete = 'N'";
                 cmd.Parameters.AddWithValue("@employeeId", employeeId);
                 conn.Open();
                 da.Fill(dt);
@@ -311,6 +311,33 @@ namespace SkillInventory.Controllers
                 return new List<EmployessSkills>();  // Return informative error response
             }
 
+        }
+        public JsonResult DeleteEmp(int id)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+                List<EmployessSkills> lst = new List<EmployessSkills>();
+                SqlCommand cmd = conn.CreateCommand();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "DeleteEmpSkill";
+
+                cmd.Parameters.AddWithValue("@EmployeeSkillId", id);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                //da.Fill(dt);
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return new JsonResult("Data Deleted");
         }
 
     }

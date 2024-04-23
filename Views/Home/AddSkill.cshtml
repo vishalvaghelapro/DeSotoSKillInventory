@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "AddSkill";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -21,12 +20,12 @@
 
 
 
-                        <form  class="needs-validation" novalidate>
+                        <form class="needs-validation" novalidate>
                             <div class="col-md mt-4 mb-4">
                                 <label for="skill" class="col-sm-2 col-form-label">Skill Name:</label>
                                 <div class="col-md-10 position-relative">
                                     <input type="text" name="name" class="form-control" value="" required>
-                                   @*  <div class="invalid-tooltip">Please enter your Skills</div> *@
+                                    @*  <div class="invalid-tooltip">Please enter your Skills</div> *@
                                 </div>
                             </div>
 
@@ -35,18 +34,18 @@
                                 <div class="form-check-inline position-relative">
                                     <input class="form-check-input" type="radio" name="proficiency" id="beginnerRadio" value="Beginner" required>
                                     <label class="form-check-label" for="beginnerRadio">Beginner</label>
-                                  
-                               @*      <div class="invalid-tooltip">Select proficiency level</div> *@
+
+                                    @*      <div class="invalid-tooltip">Select proficiency level</div> *@
                                 </div>
                                 <div class="form-check-inline position-relative">
                                     <input class="form-check-input" type="radio" name="proficiency" id="intermediateRadio" value="Intermediate" required>
                                     <label class="form-check-label" for="intermediateRadio">Intermediate</label>
-                         @*            <div class="invalid-tooltip">Select proficiency level</div> *@
+                                    @*            <div class="invalid-tooltip">Select proficiency level</div> *@
                                 </div>
                                 <div class="form-check-inline position-relative">
                                     <input class="form-check-input" type="radio" name="proficiency" id="expertRadio" value="Expert" required>
                                     <label class="form-check-label" for="expertRadio">Expert</label>
-                                 @*    <div class="invalid-tooltip">Select proficiency level</div> *@
+                                    @*    <div class="invalid-tooltip">Select proficiency level</div> *@
                                 </div>
                             </div>
 
@@ -54,26 +53,26 @@
                         </form>
 
 
-                            <br />
+                        <br />
                         <table id="myForm" class="table table-bordered data-table">
-                                <thead>
-                                        <th>SkillName</th>
-                                        <th>Proficiency</th>
-                                        <th>Delete</th>
-                                </thead>
-                                   
-                                
-                                <tbody>
-                                </tbody>
-                         </table>
-                        <button type="submit" class="btn btn-primary save-btn" onclick="AddSkill();">Submit</button>
-                        </div>
+                            <thead>
+                            <th>SkillName</th>
+                            <th>Proficiency</th>
+                            <th>Delete</th>
+                            </thead>
 
-                      
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary save-btn" onclick="AddSkill();">Submit</button>
                     </div>
+
+
                 </div>
             </div>
         </div>
+    </div>
 
 </section>
 
@@ -85,6 +84,6 @@
     <script src="~/js/dropdown.js"></script>
     <script src="~/js/site.js"></script>
     <script src="~/js/addSkill.js"></script>
-    
+
 
 }
