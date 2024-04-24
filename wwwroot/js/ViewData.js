@@ -42,12 +42,12 @@ function OnSuccess(response) {
         columns: [
             //{
             //    "data": 'employeeSkillId',
-              
+
             //},
 
             //{
             //    data: null,
-     
+
             //    render: function (data, type, row) {
             //        return employee.employeeId; // Use employee object for ID
             //    }
@@ -56,11 +56,11 @@ function OnSuccess(response) {
             {
                 data: null,
                 render: function (data, type, row) {
-                    return employee.firstName +" "+ employee.lastName
+                    return employee.firstName + " " + employee.lastName
                 }
 
             },
-           
+
             {
                 data: null,
                 render: function (data, type, row) {
@@ -82,11 +82,12 @@ function OnSuccess(response) {
 
 
             },
-            {
-                "data": 'proficiencyLevel',
-            },
+
             {
                 "data": 'skillName',
+            },
+            {
+                "data": 'proficiencyLevel',
             },
             {
                 data: null,
@@ -105,7 +106,7 @@ function OnSuccess(response) {
                         return ""; // Return nothing for 'Employee' role
                     }
                 }
-            }, 
+            },
 
             {
                 data: null,
@@ -143,6 +144,7 @@ function EditBtn(employeeSkillId) {
             $.each(res, function (index, item) {
                 $("#EmployeeMadal").modal('show');
                 $("#ESId").val(item.employeeSkillId);
+                $("#EId").val(item.employeeId);
                 $("#SkillName").val(item.skillName);
                 $("input[name='Proficiency'][value='" + item.proficiencyLevel + "']").prop("checked", true);
                 $('#UpdateBtn');

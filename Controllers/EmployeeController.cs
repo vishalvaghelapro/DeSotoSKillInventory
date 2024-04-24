@@ -19,47 +19,6 @@ namespace SkillInventory.Controllers
             Configuration = configuration;
         }
 
-        //private List<EmployessSkills> employeesSkill = new List<EmployessSkills>();
-        //[HttpGet]
-        //public JsonResult GetSkillName()
-        //{
-        //    try
-        //    {
-        //        SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-        //        List<Skill> lst = new List<Skill>();
-        //        SqlCommand cmd = conn.CreateCommand();
-        //        SqlDataAdapter da = new SqlDataAdapter(cmd);
-        //        DataTable dt = new DataTable();
-
-        //        cmd.CommandType = CommandType.Text;
-        //        cmd.CommandText = "GetSkill";
-
-        //        conn.Open();
-        //        da.Fill(dt);
-        //        conn.Close();
-
-        //        foreach (DataRow dr in dt.Rows)
-        //        {
-        //            lst.Add(
-        //                new Skill
-        //                {
-        //                    SkillId = Convert.ToInt32(dr["Skillid"]),
-        //                    SkillName = Convert.ToString(dr["SkillName"])
-        //                });
-
-        //        }
-
-        //        var data = lst;
-        //        return new JsonResult(data);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-
-        //    }
-        //    return new JsonResult(null);
-        //}
-
         [HttpGet]
         public JsonResult GetDepartmentName()
         {
@@ -83,7 +42,6 @@ namespace SkillInventory.Controllers
                     lst.Add(
                         new Department
                         {
-                            //DepartmentId = Convert.ToInt32(dr["DepartmentId"]),
                             DepartmentName = Convert.ToString(dr["DepartmentName"])
                         });
 
@@ -362,15 +320,15 @@ namespace SkillInventory.Controllers
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                     empSkills.Add(
-                        new EmployesSkills
-                        {
-                            EmployeeSkillId = Convert.ToInt32(dr["EmployeeSkillId"]),
-                            EmployeeId = Convert.ToInt32(dr["EmployeeId"]),
-                            SkillName = Convert.ToString(dr["SkillName"]),
-                            ProficiencyLevel = Convert.ToString(dr["ProficiencyLevel"]),
-                         
-                        });
+                    empSkills.Add(
+                       new EmployesSkills
+                       {
+                           EmployeeSkillId = Convert.ToInt32(dr["EmployeeSkillId"]),
+                           EmployeeId = Convert.ToInt32(dr["EmployeeId"]),
+                           SkillName = Convert.ToString(dr["SkillName"]),
+                           ProficiencyLevel = Convert.ToString(dr["ProficiencyLevel"]),
+
+                       });
 
 
                 }
@@ -387,12 +345,12 @@ namespace SkillInventory.Controllers
             return new JsonResult(null);
         }
         [HttpPost]
-        public JsonResult UpdateEmp(Employee employee)
+        public JsonResult UpdateEmp(EmployesSkills employesSkills)
         {
             try
             {
                 SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-                List<Employee> lst = new List<Employee>();
+                List<EmployesSkills> lst = new List<EmployesSkills>();
                 SqlCommand cmd = conn.CreateCommand();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -400,14 +358,10 @@ namespace SkillInventory.Controllers
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "UpdateData";
 
-                cmd.Parameters.AddWithValue("@EmployeeSkillId",employee);
-                cmd.Parameters.AddWithValue("@EmployeeId", employee.EmployeeId);
-                cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", employee.LastName);
-
-                cmd.Parameters.AddWithValue("@Department", employee.Department);
-                cmd.Parameters.AddWithValue("@SkillName", employee);
-                cmd.Parameters.AddWithValue("@ProficiencyLevel", employee.SkillList);
+                cmd.Parameters.AddWithValue("@EmployeeSkillId", employesSkills.EmployeeSkillId);
+                cmd.Parameters.AddWithValue("@EmployeeId", employesSkills.EmployeeId);
+                cmd.Parameters.AddWithValue("@SkillName", employesSkills.SkillName);
+                cmd.Parameters.AddWithValue("@ProficiencyLevel", employesSkills.ProficiencyLevel);
 
                 cmd.CommandType = CommandType.StoredProcedure;
                 conn.Open();
