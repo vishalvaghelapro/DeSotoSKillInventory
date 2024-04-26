@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NuGet.Common;
 using SkillInventory.Models;
@@ -376,5 +377,43 @@ namespace SkillInventory.Controllers
             return new JsonResult("Data is Updated");
         }
 
+
+        public JsonResult GetAllSKills(string message)
+        {
+                 int? employeeId = HttpContext.Session.GetInt32("EmpID");
+            return new JsonResult("");
+        }
+        public JsonResult Charts(Charts charts)
+        {
+
+            SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            List<Charts> lst = new List<Charts>();
+
+           
+            SqlCommand cmd = conn.CreateCommand();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "DepartmentEmp";
+
+            conn.Open();
+            da.Fill(dt);
+          
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                lst.Add(
+                    new Charts
+                    {
+                        SkillName = Convert.ToString(dr["SkillName"]),
+                        Employees = Convert.ToString(dr["Employees"]),
+
+                    });
+            }
+      
+            return new JsonResult(lst);
+  
+        }
     }
 }

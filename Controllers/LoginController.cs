@@ -104,7 +104,7 @@ namespace SkillInventory.Controllers
             var token = new JwtSecurityToken(Configuration["Jwt:Issuer"],
                 Configuration["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.Now.AddMinutes(1200),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
