@@ -182,7 +182,9 @@ namespace SkillInventory.Controllers
             Console.WriteLine("started");
             try
             {
-                var employeeId = HttpContext.Session.GetInt32("EmpID"); ;
+                var employeeId = HttpContext.Session.GetInt32("EmpID");
+                var role = HttpContext.Session.GetString("role");
+
 
                 SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
                 List<Employee> employees = new List<Employee>();
@@ -190,17 +192,30 @@ namespace SkillInventory.Controllers
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
 
+                var roleCondition = string.Empty;
+                var userRole = DecryptPasswordBase64(role);
+
+
+                if (userRole != "Admin")
+                {
+                    roleCondition = " where EmployeeID = @employeeId";
+                }
+
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "Select * from Employees where EmployeeID = @employeeId";
+
+                // Check roll
+                cmd.CommandText = "Select * from EmployeeViewData" + roleCondition;
+               
                 cmd.Parameters.AddWithValue("@employeeId", employeeId);
                 conn.Open();
                 da.Fill(dt);
                 conn.Close();
-                List<EmployesSkills> empSkillList = GetEmpSkill();
+                List<EmployesSkillList> empSkillList = new List<EmployesSkillList>();
+
                 foreach (DataRow dr in dt.Rows)
                 {
-                    employees.Add(
-                        new Employee
+                    empSkillList.Add(
+                        new EmployesSkillList
                         {
                             EmployeeId = Convert.ToInt32(dr["EmployeeId"]),
                             FirstName = Convert.ToString(dr["FirstName"]),
@@ -208,11 +223,13 @@ namespace SkillInventory.Controllers
                             Email = Convert.ToString(dr["Email"]),
                             Department = Convert.ToString(dr["Department"]),
                             Role = Convert.ToString(dr["Role"]),
-                            SkillList = empSkillList
+                            EmployeeSkillId = Convert.ToInt32(dr["EmployeeSkillId"]),
+                            SkillName = Convert.ToString(dr["SkillName"]),
+                            ProficiencyLevel = Convert.ToString(dr["ProficiencyLevel"]),
                         });
 
                 }
-                var data = employees;
+                var data = empSkillList;
                 return new JsonResult(data);
                 //return Json(dt);
             }
@@ -415,5 +432,12 @@ namespace SkillInventory.Controllers
             return new JsonResult(lst);
   
         }
+        public static string DecryptPasswordBase64(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+
     }
 }

@@ -78,6 +78,7 @@ namespace SkillInventory.Controllers
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpContext.Session.SetString("JWToken", token);
                 HttpContext.Session.SetInt32("EmpID", Convert.ToInt32(UserId.Value));
+                HttpContext.Session.SetString("role", Convert.ToString(loginData.UserRoll));
                 //  return RedirectToAction("HomeController/Home");
                 return new JsonResult(loginData);
 
@@ -113,6 +114,12 @@ namespace SkillInventory.Controllers
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(text);
             return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string DecryptPasswordBase64(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

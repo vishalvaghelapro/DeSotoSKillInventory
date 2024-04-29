@@ -1268,3 +1268,9 @@ h6 {
     font-weight: bold;
 }
 
+.dataTables_filter {
+    width: 50%;
+    float: right;
+    text-align: right;
+    padding-bottom: 30PX;
+}

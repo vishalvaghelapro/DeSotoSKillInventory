@@ -60,14 +60,14 @@ namespace SkillInventory
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //app.UseStatusCodePages(async context =>
-            //{
-            //    var response = context.HttpContext.Response;
+            app.UseStatusCodePages(async context =>
+            {
+                var response = context.HttpContext.Response;
 
-            //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
-            //            response.StatusCode == (int)HttpStatusCode.Forbidden)
-            //        response.Redirect("/");
-            //});
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden)
+                    response.Redirect("/");
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -88,13 +88,11 @@ namespace SkillInventory
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+                  name: "default",
+                  pattern: "{controller=Home}/{action=Login}/{id?}");
                 endpoints.MapControllerRoute(
-
-                name: "Login",
-                pattern: "{controller=Home}/{action=Login}/{id?}");
-                
+                name: "Dashboard",
+                pattern: "{controller=Home}/{action=Dashboard}/{id?}");
                 endpoints.MapControllerRoute(
                 name: "AddSkill",
                 pattern: "{controller=Home}/{action=AddSkill}/{id?}");

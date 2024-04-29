@@ -12,7 +12,7 @@ namespace SkillInventory.Controllers
 {
     public class HomeController : Controller
     {
-     
+
         private readonly ILogger<HomeController> _logger;
         public IConfiguration Configuration { get; }
 
@@ -21,8 +21,33 @@ namespace SkillInventory.Controllers
             _logger = logger;
             Configuration = configuration;
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="charts"></param>
+        /// <param name="employee"></param>
+        /// <param name="employesSkills"></param>
+        /// <returns></returns>
         
-        public IActionResult Dashboard(Charts charts)
+        [Authorize]
+        public IActionResult Dashboard(Charts charts, Employee employee, EmployesSkills employesSkills)
+        {
+            List<object> viewModel = new List<object>();
+            var emp = EmployeeInfo(employee);
+            var pieChartData = PieChart(charts);
+
+            //viewModel.Add(emp);
+            //viewModel.Add(pieChartData);
+            return View(pieChartData);
+            //return View();
+        }
+
+        public ChartsViewModel PieChart(Charts charts)
         {
             SqlConnection conn = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
             List<Charts> lst = new List<Charts>();
@@ -57,38 +82,28 @@ namespace SkillInventory.Controllers
             string StockcommaSeparatedValues = string.Join(", ", Employees);
             string[] stringInts = CategorycommaSeparatedValues.Split(',');
 
-            //var echartData = lst.Select(item => new
-            //{
-            //    value = item.Employees,
-            //    name = item.SkillName
-            //});
-            // Convert string integers to actual integers using LINQ
-            //int[] intArray = stringInts.Select(int.Parse).ToArray();
-            //ViewBag.PieChartDataJson = CategorycommaSeparatedValues.ToArray(); // Convert to JSON
-            //ViewBag.Department = CategorycommaSeparatedValues.ToArray();
+
             ViewBag.Employees = StockcommaSeparatedValues;
             ViewBag.SkillName = DepartmentNames;
-            //ViewBag.ChartsData = echartData; 
-           
-            //ChartsViewModel viewModel = new ChartsViewModel();
-            //foreach (var item in lst)
-            //{
-            //    viewModel.ChartsList.Add(new Charts { SkillName = item.SkillName, Employees = item.Employees });
-            //} // Get your charts data
 
-            ///return View(new Charts { Employees = StockcommaSeparatedValues, SkillName = CategorycommaSeparatedValues });
-
-            return View(new ChartsViewModel { Employee = StockcommaSeparatedValues, SkillNames = DepartmentNames });
-            //return View(viewModel);
-            //return View(new Charts(lst));
-
+            //   return RedirectToAction("Dashboard", new ChartsViewModel { Employee = StockcommaSeparatedValues, SkillNames = DepartmentNames });
+            return new ChartsViewModel { Employee = StockcommaSeparatedValues, SkillNames = DepartmentNames };
         }
+
+        public Employee EmployeeInfo(Employee employee)
+        {
+            var employeeId = HttpContext.Session.GetInt32("EmpID");
+            employee.EmployeeId = Convert.ToInt32(employeeId);
+            Console.WriteLine(employeeId);
+            return employee;
+        }
+
         [Authorize]
         public IActionResult ViewSkill()
         {
             return View();
         }
-     
+
         public IActionResult Registration()
         {
             return View();
@@ -98,11 +113,8 @@ namespace SkillInventory.Controllers
         {
             return View();
         }
-        
-        public IActionResult Login()
-        {
-            return View();
-        }
+     
+      
         [Authorize]
         public IActionResult Test()
         {

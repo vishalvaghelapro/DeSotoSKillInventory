@@ -24,4 +24,19 @@ namespace SkillInventory.Models
         public char? IsDelete { get; set; }
 
     }
+
+    public class EmployesSkillList
+    {
+        public int? EmployeeSkillId { get; set; }
+        public int? EmployeeId { get; set; }
+        public String? SkillName { get; set; }
+        public String? ProficiencyLevel { get; set; }
+        public char? IsDelete { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
+        public string? Department { get; set; }
+        public string? Role { get; set; }
+
+    }
 }

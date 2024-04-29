@@ -46,3 +46,22 @@ body {
     padding: 5px;
     font-size: 16px;
 }
+@media (max-width: 480px) {
+    #div {
+        top: 50%; /* IMPORTANT */
+        left: 50%; /* IMPORTANT */
+        display: block;
+        position: absolute;
+        background: url(images/background.png) no-repeat center center;
+        width: 750px;
+        height: 417px;
+        margin-top: -208.5px; /* HALF OF THE HEIGHT */
+        margin-left: -375px; /* HALF OF THE WIDTH */
+    }
+}
+.sectioncard {
+    margin-left: 200px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}

@@ -15,17 +15,28 @@ function getEmpData(res) {
 
 
 function OnSuccess(response) {
-    var employee = response[0]; // Access the first (and only) employee object
+    var employee = response; // Access the first (and only) employee object
     var skills = employee.skillList;
+    //for (var employee in response) {
 
+    //    var skills = employee.skillList;
+    //}
+    
     $('#empDataTable').DataTable({
         bProcessing: true,
         blenghtChange: true,
-        lenghtMenu: [[5, 10, 15, -1], [5, 10, 15, "All"]],
         bfilter: true,
+        language: {
+            lengthMenu: 'Select _MENU_  ',
+            
+        },
+        lenghtMenu: [[5, 10, 15, -1], [5, 10, 15, "All"]],  
         bSort: true,
         bPaginate: true,
-        data: skills,
+        "oLanguage": {
+            "sInfo": "Showing _START_ to _END_ of _TOTAL_ Skills",// text you want show for info section
+        },
+        data: employee,
         buttons: [
             {
                 text: 'Create new record',
@@ -40,45 +51,34 @@ function OnSuccess(response) {
         ],
 
         columns: [
-            //{
-            //    "data": 'employeeSkillId',
 
-            //},
-
-            //{
-            //    data: null,
-
-            //    render: function (data, type, row) {
-            //        return employee.employeeId; // Use employee object for ID
-            //    }
-
-            //},
             {
-                data: null,
+                data: 'firstName',
                 render: function (data, type, row) {
-                    return employee.firstName + " " + employee.lastName
+                    const lastName = row['lastName'];
+                    return data + ' ' + lastName
                 }
 
             },
 
             {
-                data: null,
-                render: function (data, type, row) {
-                    return employee.email
-                }
+                data: 'email',
+                //render: function (data, type, row) {
+                //    return employee.email
+                //}
             },
             {
-                data: null,
-                render: function (data, type, row) {
-                    return employee.department
-                }
+                data: 'department',
+                //render: function (data, type, row) {
+                //    return employee.department
+                //}
             },
 
             {
-                data: null,
-                render: function (data, type, row) {
-                    return employee.role
-                }
+                data: 'role',
+                //render: function (data, type, row) {
+                //    return employee.role
+                //}
 
 
             },
@@ -129,6 +129,7 @@ function OnSuccess(response) {
         ]
     });
 
+    
 }
 
 function EditBtn(employeeSkillId) {
